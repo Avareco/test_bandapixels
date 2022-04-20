@@ -1,21 +1,31 @@
-import React, { FC } from 'react'
-import { ITodos } from '../types/tasks'
+import React, { FC, useContext } from 'react'
+import { AppContext } from '../context/AppContext'
+import { ITodos, IUser } from '../types/tasks'
+import { Task } from './Task'
 interface TickedItemProps {
 	ticketItem: ITodos
-	taskStatus:string
+	taskStatus: string
 }
-export const TickedItem: FC<TickedItemProps> = ({ ticketItem, taskStatus}) => {
+export const TickedItem: FC<TickedItemProps> = ({ ticketItem, taskStatus }) => {
+	const users = useContext<IUser[]>(AppContext)
+	let user: IUser = { id: 0, name: "" };
+	const getUser = (task: any) => {
+		for (const key in users) {
+			if (users[key].id === task.userid) {
+				user = users[key]
+			}
+		}
+		return user.color;
+	}
+
 	return (
 		<>
 			{ticketItem.items.map(task =>
-				<div className="task">
-					<div className="task__container">
-						<div className="task__img">
-						</div>
-						<div className="task__text">{task.title}</div>
-					</div>
-					<div className="task__status">{taskStatus}</div>
-				</div>)}
+
+				<Task key={task.id} task={task} taskStatus={taskStatus} color={getUser(task)} />
+
+
+			)}
 		</>
 	)
 }

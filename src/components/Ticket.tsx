@@ -10,10 +10,8 @@ export const Ticket: FC<TicketProps> = ({ todos }) => {
 			<h2>Ticket list</h2>
 			<div className="todo-wrapper todo-wrapper_ticket">
 				{todos.map(ticketItem =>
-					<TickedItem ticketItem={ticketItem} taskStatus={ticketItem.title} />
+					<TickedItem key={ticketItem.id} ticketItem={ticketItem} taskStatus={ticketItem.title} />
 				)}
-
-
 			</div>
 		</div>
 	)

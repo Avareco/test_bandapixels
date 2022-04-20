@@ -59,13 +59,20 @@ h2{
 		}
 	&__img{
 		flex-shrink: 0;
-		display: block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width:90px;
 		height: 90px;
 		background: aqua;
 		border-radius: 50%;
-		
-	}
+			}
+	&__letters{
+		font-family: 'Roboto';
+		font-size: 36px;
+		line-height: 42px;
+		color: #fff;
+		}
 
 	&__text{
 		margin-left: 20px;
@@ -88,8 +95,4 @@ h2{
 	&:last-child{
 		display: none;
 	}
-}
-.ticket{
-	
-
 }

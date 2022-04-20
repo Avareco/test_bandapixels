@@ -1,46 +1,77 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import "./App.scss"
 import { Board } from './components/Board';
 import { Ticket } from './components/Ticket';
-import AppContext from './context/context';
-import { ITodos } from './types/tasks';
+import { AppContext } from './context/AppContext';
+
+import { ITodos, IUser } from './types/tasks';
 
 
 function App() {
+	useEffect(() => {
+		const fetchUsers = async () => {
+			try {
+				const randomColor = ()=>'#' + (Math.random().toString(16) + '000000').substring(2, 8).toUpperCase();
+				const response = await axios.get<IUser[]>("https://jsonplaceholder.typicode.com/users")
+				setUsers(response.data.map(item => ({ ...item, color: randomColor() })))
+			} catch (error) {
+				alert("Can't download users!")
+				console.log(error)
+			}
+
+		};
+		fetchUsers()
+
+	}, [])
 	const [todos, setTodos] = useState<ITodos[]>([
 		{
 			id: 1, title: "Todo", items: [
 				{
 					id: 1,
-					name: "Leanne Graham",
+					userid: 1,
 					title: "1Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lore...",
 				},
 				{
 					id: 4,
-					name: "Leanne Graham",
+					userid: 1,
 					title: "1Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lore...",
 				},
 			],
 		},
 		{
 			id: 2, title: "In progress", items: [
-				{ id: 2, name: "Ervin Howell", title: "2Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lore...", }
+				{ id: 2, userid: 2, title: "2Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lore...", }
 			],
 		},
 		{
 			id: 3, title: "Done", items: [
-				{ id: 3, name: "Clementine Bauch", title: "3Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lore...", }
+				{ id: 3, userid: 3, title: "3Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lore...", }
 			],
 		},
 	])
+	const [users, setUsers] = useState<IUser[]>([
+		{
+			"id": 1,
+			"name": "Leanne Graham",
+			
+		 },
+		 {
+			"id": 2,
+			"name": "Ervin Howell",
+			
+		 },
+		 {
+			"id": 3,
+			"name": "Clementine Bauch",
+			
+		 },
+	])
+	console.log(users)
 	return (
-		<AppContext.Provider value={{setTodos}}>
+		<AppContext.Provider value={users}>
 			<div className="wrapper">
-				<Board
-					todos={
-						todos
-					} />
-
+				<Board todos={todos} />
 				<Ticket todos={todos} />
 			</div>
 		</AppContext.Provider>

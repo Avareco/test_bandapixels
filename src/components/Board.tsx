@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
+
 import { ITodos } from '../types/tasks'
 import { BoardItem } from './BoardItem'
 interface BoardProps {
 	todos: ITodos[]
 }
 export const Board: FC<BoardProps> = ({ todos }) => {
+
 	return (
 		<div className='board'>
 			<h2>Board</h2>
