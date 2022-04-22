@@ -1,44 +1,65 @@
-import React, { FC, useContext, useEffect } from 'react'
+import { FC, useContext } from 'react'
+import { useDispatch } from 'react-redux'
 import { AppContext } from '../context/AppContext'
-import { ITask, IUser } from '../types/tasks'
-
-import styles from "./Task.module.scss"
+import { ITask, ITodo, TodosActionTypes } from '../types/todo'
+import { IUser } from '../types/user'
 
 interface TaskProps {
 	task: ITask
+	item: ITodo
 	taskStatus?: string
-	color?: any
 }
-export const Task: FC<TaskProps> = ({ task, taskStatus, color }) => {
+
+export const Task: FC<TaskProps> = ({ item, task, taskStatus }) => {
+	const dispatch = useDispatch()
 	const users = useContext<IUser[]>(AppContext)
-	const firstLetters = () => {
-	}
 	let user: IUser = { id: 0, name: "" };
+
 	const getUser = () => {
 		for (const key in users) {
-			if (users[key].id === task.userid) {
+			if (users[key].id === task.userId) {
 				user = users[key]
 			}
 		}
 	}
 	getUser()
 
+	let firstLetters: string | undefined = user.name
+		.match(/\b(\w)/g)
+		?.join("")
+		.substring(0, 2)
+		.toUpperCase();
 
+	const onTaskClick = () => {
+		dispatch({
+			type: TodosActionTypes.CLICK_TODO,
+			payload: { item: item, task: task }
+		})
+	}
 
-	let acronym = user.name.match(/\b(\w)/g)?.join("");
-	console.log(acronym)
-	return (<>
-		<div className="task">
-			<div className="task__container">
-				<div className="task__img" style={{ backgroundColor: user.color }} >
-					<div className="task__letters">
-						{acronym}
+	return (
+		<>
+			<div onClick={() => {
+				item.id === 3 ?
+					alert("Task is done!") :
+					onTaskClick()
+			}}
+				className="task">
+				<div className="task__container">
+					<div className="task__img" style={{ backgroundColor: user.color }} >
+						<div className="task__letters">
+							{firstLetters}
+						</div>
+					</div>
+					<div className="task__text">{taskStatus ?
+						task.title :
+						(task.title.length > 79 ?
+							task.title.substring(0, 79) + "..." :
+							task.title)}
 					</div>
 				</div>
-				<div className="task__text">{task.title}</div>
+				<div className="task__status">{taskStatus}</div>
 			</div>
-			<div className="task__status">{taskStatus}</div>
-		</div>
-	</>
+		</>
 	)
 }

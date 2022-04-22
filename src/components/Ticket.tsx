@@ -1,16 +1,20 @@
-import React, { FC } from 'react'
-import { ITodos } from '../types/tasks'
+import  { FC } from 'react'
+import { useTypedSelector } from '../hooks/useTypedSelector'
+import { ITodo } from '../types/todo'
+
 import { TickedItem } from './TickedItem'
-interface TicketProps {
-	todos: ITodos[]
-}
-export const Ticket: FC<TicketProps> = ({ todos }) => {
+
+export const Ticket: FC = () => {
+	const todos: ITodo[] = useTypedSelector(state => state.todos)
 	return (
 		<div className="ticket">
 			<h2>Ticket list</h2>
 			<div className="todo-wrapper todo-wrapper_ticket">
 				{todos.map(ticketItem =>
-					<TickedItem key={ticketItem.id} ticketItem={ticketItem} taskStatus={ticketItem.title} />
+					<TickedItem key={ticketItem.id}
+						ticketItem={ticketItem}
+						taskStatus={ticketItem.title}
+					/>
 				)}
 			</div>
 		</div>

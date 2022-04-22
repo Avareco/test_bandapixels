@@ -1,44 +1,50 @@
-import { ITodos } from "../../types/tasks"
+import { ITodo, TodosActions, TodosActionTypes } from "../../types/todo";
 
-const defaultState: ITodos[] = [
+const defaultState: ITodo[] = [
 	{
-		id: 1, title: "Todo", items: [
-			{
-				id: 0,
-				userid:0,
-				title: "",
-			},
+		id: 1, title: "Todo", tasks: [
+
 		],
 	},
 	{
-		id: 1, title: "In progress", items: [
-			{
-				id: 0,
-				userid:0,
-				title: "",
-			},
+		id: 2, title: "In Progress", tasks: [
+
 		],
 	},
 	{
-		id: 1, title: "Done", items: [
-			{
-				id: 0,
-				userid:0,
-				title: "",
-			},
+		id: 3, title: "Done", tasks: [
+
 		],
 	},
 ]
-export const todosReducer = (state = defaultState, action: any)=>{
+
+export const todosReducer = (state = defaultState, action: TodosActions) => {
 	switch (action.type) {
-		case "FETCH_TODOS":
-			return;
-		case "FETCH_TODOS_SUCCESS":
-			return;
-		case "FETCH_TODOS_ERROR":
-			return;
-			
-		default: [...state]
-			break;
+		case TodosActionTypes.FETCH_TODOS:
+
+			return state.map((item, index) => {
+				if (index === 0) {
+					return { ...item, tasks: action.payload }
+				}
+				return item
+			});
+
+		case TodosActionTypes.CLICK_TODO:
+
+			const task = action.payload.task
+			const item = action.payload.item
+			const nextItem = state[state.indexOf(item) + 1]
+			const indexOfTask = item.tasks.indexOf(task)
+
+			item.tasks.splice(indexOfTask, 1)
+			nextItem.tasks.push(task)
+
+			return state.map(item => {
+				return item;
+			});
+
+
+		default: return [...state]
+
 	}
 }

@@ -1,12 +1,12 @@
-import React, { FC } from 'react'
+import  { FC } from 'react'
+import { useTypedSelector } from '../hooks/useTypedSelector'
+import { ITodo } from '../types/todo'
 
-import { ITodos } from '../types/tasks'
+
 import { BoardItem } from './BoardItem'
-interface BoardProps {
-	todos: ITodos[]
-}
-export const Board: FC<BoardProps> = ({ todos }) => {
 
+export const Board: FC= () => {
+	const todos: ITodo[] = useTypedSelector(state => state.todos)
 	return (
 		<div className='board'>
 			<h2>Board</h2>

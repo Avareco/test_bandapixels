@@ -64,7 +64,7 @@ h2{
 		justify-content: center;
 		width:90px;
 		height: 90px;
-		background: aqua;
+		background: lightblue;
 		border-radius: 50%;
 			}
 	&__letters{
@@ -81,6 +81,7 @@ h2{
 		font-weight: 400;
 		font-size: 18px;
 		line-height: 21px;
+		min-width:246px;
 	}
 
 	&__status{
